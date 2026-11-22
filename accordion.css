@@ -4,18 +4,23 @@
      color:white;
  
 } */
-
+ 
 .container {
   width: 80%;
   max-width: 600px;
   margin: 50px auto;
 }
 
+/* Accordion headings */
+.container h2 {
+  margin: 0;
+}
+
+/* Accordion buttons */
 button.accordion {
   width: 100%;
   background-color: whitesmoke;
   border: none;
-
   text-align: left;
   padding: 15px 20px;
   font-size: 18px;
@@ -24,10 +29,10 @@ button.accordion {
   transition: background-color 0.2s linear;
 }
 
+/* Accordion icons */
 button.accordion:after {
   font-family: FontAwesome;
   content: "\f150";
-  font-family: "fontawesome";
   font-size: 18px;
   float: right;
 }
@@ -36,11 +41,19 @@ button.accordion.is-open:after {
   content: "\f151";
 }
 
+/* Hover and open states */
 button.accordion:hover,
 button.accordion.is-open {
   background-color: #ddd;
 }
 
+/* Keyboard focus indicator */
+button.accordion:focus-visible {
+  outline: 3px solid #005fcc;
+  outline-offset: 2px;
+}
+
+/* Accordion content */
 .accordion-content {
   background-color: white;
   border-left: 1px solid whitesmoke;
@@ -49,4 +62,12 @@ button.accordion.is-open {
   max-height: 0;
   overflow: hidden;
   transition: max-height 0.2s ease-in-out;
+}
+
+/* Reduced motion accessibility */
+@media (prefers-reduced-motion: reduce) {
+  .accordion-content,
+  button.accordion {
+    transition: none;
+  }
 }

@@ -9,22 +9,65 @@
   6. If the accordion is closed we set the max-height of the currently hidden text inside the accordion from 0 to the scroll height of the content inside the accordion. The scroll height refers to the height of an html element in pixels. For this specific example, we are talking about the height of the div with the class accordion-content with all of its nested ptags
 */
 
+
 const accordionBtns = document.querySelectorAll(".accordion");
 
-accordionBtns.forEach((accordion) => {
-  accordion.onclick = function () {
-    this.classList.toggle("is-open");
+accordionBtns.forEach((accordion, index) => {
 
-    let content = this.nextElementSibling;
-    console.log(content);
+  // Open and close accordion
+  accordion.addEventListener("click", function () {
 
-    if (content.style.maxHeight) {
-      //this is if the accordion is open
-      content.style.maxHeight = null;
+    const content = document.getElementById(
+      this.getAttribute("aria-controls")
+    );
+
+    const isOpen = this.getAttribute("aria-expanded") === "true";
+
+    if (isOpen) {
+      // Close accordion
+      this.classList.remove("is-open");
+      this.setAttribute("aria-expanded", "false");
+      content.style.maxHeight = "0px";
+      content.inert = true;
+
     } else {
-      //if the accordion is currently closed
+      // Open accordion
+      this.classList.add("is-open");
+      this.setAttribute("aria-expanded", "true");
+      content.inert = false;
       content.style.maxHeight = content.scrollHeight + "px";
-      console.log(content.style.maxHeight);
     }
-  };
+  });
+
+  // Keyboard navigation
+  accordion.addEventListener("keydown", function (event) {
+
+    let targetIndex;
+
+    switch (event.key) {
+
+      case "ArrowDown":
+        targetIndex = (index + 1) % accordionBtns.length;
+        break;
+
+      case "ArrowUp":
+        targetIndex =
+          (index - 1 + accordionBtns.length) % accordionBtns.length;
+        break;
+
+      case "Home":
+        targetIndex = 0;
+        break;
+
+      case "End":
+        targetIndex = accordionBtns.length - 1;
+        break;
+
+      default:
+        return;
+    }
+
+    event.preventDefault();
+    accordionBtns[targetIndex].focus();
+  });
 });
